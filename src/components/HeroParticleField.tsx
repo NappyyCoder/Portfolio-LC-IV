@@ -10,29 +10,24 @@ interface Particle {
   r: number;
 }
 
-const defaultMinH = "min-h-[clamp(3.2rem,10vw,8rem)]";
-
-export default function HeroLeonardPlayfield({
+/**
+ * One canvas: interactive dots from first child through last, visible on load.
+ * Pointer attraction adds motion; idle state keeps gentle drift + visible dots.
+ */
+export default function HeroParticleField({
   children,
   className = "",
-  minHeightClass = defaultMinH,
-  variant = "full",
 }: {
   children: ReactNode;
   className?: string;
-  /** Tailwind min-height for the interactive hit area */
-  minHeightClass?: string;
-  /** `inline` shrinks the field to content (e.g. badge pill) */
-  variant?: "full" | "inline";
 }) {
-  const layout =
-    variant === "inline" ? "inline-block w-auto max-w-full" : "block w-full";
-  const wrapRef = useRef<HTMLSpanElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const mouseRef = useRef({ x: 0.5, y: 0.5, active: false });
   const rafRef = useRef(0);
   const reducedRef = useRef(false);
+  const tickRef = useRef(0);
 
   const syncMouse = useCallback((clientX: number, clientY: number) => {
     const wrap = wrapRef.current;
@@ -74,6 +69,7 @@ export default function HeroLeonardPlayfield({
     let inited = false;
 
     const tick = () => {
+      tickRef.current += 1;
       const W = wrap.clientWidth;
       const H = wrap.clientHeight;
       if (W < 2 || H < 2) {
@@ -89,13 +85,14 @@ export default function HeroLeonardPlayfield({
         canvas.style.width = `${W}px`;
         canvas.style.height = `${H}px`;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const n = Math.min(96, Math.max(36, Math.floor((W * H) / 10000)));
+        const area = W * H;
+        const n = Math.min(240, Math.max(72, Math.floor(area / 5500)));
         particlesRef.current = Array.from({ length: n }, () => ({
           x: Math.random() * W,
           y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.45,
-          vy: (Math.random() - 0.5) * 0.45,
-          r: Math.random() * 1.4 + 0.45,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          r: Math.random() * 1.35 + 0.5,
         }));
         inited = true;
       }
@@ -104,31 +101,35 @@ export default function HeroLeonardPlayfield({
 
       if (reducedRef.current) {
         const g = ctx.createLinearGradient(0, 0, W, H);
-        g.addColorStop(0, "rgba(37, 99, 235, 0.12)");
-        g.addColorStop(0.5, "rgba(59, 130, 246, 0.08)");
-        g.addColorStop(1, "rgba(37, 99, 235, 0.06)");
+        g.addColorStop(0, "rgba(37, 99, 235, 0.1)");
+        g.addColorStop(0.5, "rgba(59, 130, 246, 0.07)");
+        g.addColorStop(1, "rgba(37, 99, 235, 0.08)");
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, W, H);
         rafRef.current = requestAnimationFrame(tick);
         return;
       }
 
+      const t = tickRef.current * 0.008;
       const mx = mouseRef.current.x * W;
       const my = mouseRef.current.y * H;
-      const pull = mouseRef.current.active ? 95 : 0;
+      const pull = mouseRef.current.active ? 105 : 0;
 
       for (const p of particlesRef.current) {
         if (pull > 0) {
           const dx = mx - p.x;
           const dy = my - p.y;
-          const d2 = dx * dx + dy * dy + 120;
-          p.vx += (dx / d2) * pull * 0.012;
-          p.vy += (dy / d2) * pull * 0.012;
+          const d2 = dx * dx + dy * dy + 100;
+          p.vx += (dx / d2) * pull * 0.014;
+          p.vy += (dy / d2) * pull * 0.014;
         }
-        p.vx += (Math.random() - 0.5) * 0.028;
-        p.vy += (Math.random() - 0.5) * 0.028;
-        p.vx *= 0.945;
-        p.vy *= 0.945;
+        // Idle “breathing” drift so dots feel alive before any pointer move
+        p.vx += Math.sin(t + p.x * 0.01) * 0.012;
+        p.vy += Math.cos(t * 0.9 + p.y * 0.01) * 0.012;
+        p.vx += (Math.random() - 0.5) * 0.032;
+        p.vy += (Math.random() - 0.5) * 0.032;
+        p.vx *= 0.94;
+        p.vy *= 0.94;
         p.x += p.vx;
         p.y += p.vy;
         if (p.x < 0) {
@@ -150,7 +151,7 @@ export default function HeroLeonardPlayfield({
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(37, 99, 235, 0.38)";
+        ctx.fillStyle = "rgba(37, 99, 235, 0.45)";
         ctx.fill();
       }
 
@@ -169,16 +170,16 @@ export default function HeroLeonardPlayfield({
   }, [syncMouse]);
 
   return (
-    <span
+    <div
       ref={wrapRef}
-      className={`relative ${layout} ${minHeightClass} cursor-crosshair ${className}`}
+      className={`relative block w-full cursor-crosshair ${className}`}
     >
       <canvas
         ref={canvasRef}
         className="pointer-events-none absolute inset-0 z-0 rounded-3xl"
         aria-hidden="true"
       />
-      {children}
-    </span>
+      <div className="relative z-10">{children}</div>
+    </div>
   );
 }

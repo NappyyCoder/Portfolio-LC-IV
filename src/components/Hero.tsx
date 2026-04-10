@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Github, ChevronDown } from "lucide-react";
 import { staggerContainer, fadeInUp, heroTitle } from "@/lib/animations";
-import HeroLeonardPlayfield from "@/components/HeroLeonardPlayfield";
+import HeroParticleField from "@/components/HeroParticleField";
 
 export default function Hero() {
   return (
@@ -32,42 +32,28 @@ export default function Hero() {
         animate="visible"
         className="relative z-10 w-full max-w-4xl mx-auto px-6 lg:px-8 text-center pt-24 pb-16"
       >
-        {/* ── Name ── */}
-        <motion.h1
-          variants={heroTitle}
-          className="text-[clamp(3.2rem,10vw,8rem)] font-black leading-[0.88] tracking-tight mb-5"
-        >
-          <HeroLeonardPlayfield>
-            <span className="gradient-text relative z-10 block">Leonard</span>
-          </HeroLeonardPlayfield>
-          <HeroLeonardPlayfield>
-            <span className="text-text-primary relative z-10 block">Clay IV.</span>
-          </HeroLeonardPlayfield>
-        </motion.h1>
-
-        {/* ── Title ── */}
-        <motion.div
-          variants={fadeInUp}
-          className="text-[clamp(1rem,2.2vw,1.3rem)] font-semibold text-text-secondary tracking-wide mb-5"
-        >
-          <HeroLeonardPlayfield minHeightClass="min-h-[clamp(1.75rem,3vw,2.35rem)]">
-            <span className="relative z-10 block">
-              Full-Stack Developer
-              <span aria-hidden="true" className="mx-3 text-accent opacity-60">·</span>
-              Creative Director
-            </span>
-          </HeroLeonardPlayfield>
-        </motion.div>
-
-        {/* ── Purdue badge — below title, above tagline ── */}
-        <motion.div variants={fadeInUp} className="flex justify-center mb-6">
-          <HeroLeonardPlayfield
-            variant="inline"
-            minHeightClass="min-h-[2.875rem]"
-            className="rounded-full"
+        {/* Single dot field: name → GitHub (dots visible on load, interactive on hover) */}
+        <HeroParticleField className="mb-20 rounded-3xl px-2 py-1 sm:px-3">
+          <motion.h1
+            variants={heroTitle}
+            className="text-[clamp(3.2rem,10vw,8rem)] font-black leading-[0.88] tracking-tight mb-5"
           >
+            <span className="gradient-text block">Leonard</span>
+            <span className="text-text-primary block">Clay IV.</span>
+          </motion.h1>
+
+          <motion.div
+            variants={fadeInUp}
+            className="text-[clamp(1rem,2.2vw,1.3rem)] font-semibold text-text-secondary tracking-wide mb-5"
+          >
+            Full-Stack Developer
+            <span aria-hidden="true" className="mx-3 text-accent opacity-60">·</span>
+            Creative Director
+          </motion.div>
+
+          <motion.div variants={fadeInUp} className="flex justify-center mb-6">
             <span
-              className="relative z-10 inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase"
               style={{
                 background: "var(--tag-bg)",
                 border: "1px solid var(--tag-border)",
@@ -80,54 +66,48 @@ export default function Hero() {
               />
               Purdue University &nbsp;&mdash;&nbsp; Graduating May 2026
             </span>
-          </HeroLeonardPlayfield>
-        </motion.div>
+          </motion.div>
 
-        {/* ── Tagline ── */}
-        <motion.p
-          variants={fadeInUp}
-          className="text-sm text-text-muted max-w-sm mx-auto mb-10 leading-relaxed"
-        >
-          Building at the intersection of code, creativity, and culture.
-        </motion.p>
-
-        {/* ── CTAs ── */}
-        <motion.div variants={fadeInUp} className="mb-20 w-full">
-          <HeroLeonardPlayfield
-            minHeightClass="min-h-[8.75rem] sm:min-h-[4rem]"
-            className="rounded-2xl"
+          <motion.p
+            variants={fadeInUp}
+            className="text-sm text-text-muted max-w-sm mx-auto mb-10 leading-relaxed"
           >
-            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                onClick={() =>
-                  document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-sm text-white shadow-glow-violet hover:shadow-glow-violet-lg hover:opacity-90 transition-all duration-200 focus-visible:outline-accent"
-                style={{
-                  background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 55%, #1e40af 100%)",
-                }}
-              >
-                View My Work
-                <ArrowRight
-                  size={16}
-                  className="group-hover:translate-x-1 transition-transform"
-                  aria-hidden="true"
-                />
-              </button>
+            Building at the intersection of code, creativity, and culture.
+          </motion.p>
 
-              <a
-                href="https://github.com/NappyyCoder"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open GitHub profile in a new tab"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-sm text-text-secondary border border-[var(--border-dim)] hover:text-text-primary hover:border-[var(--border-glow)] transition-all duration-200 focus-visible:outline-accent"
-              >
-                <Github size={16} aria-hidden="true" />
-                GitHub
-              </a>
-            </div>
-          </HeroLeonardPlayfield>
-        </motion.div>
+          <motion.div
+            variants={fadeInUp}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <button
+              onClick={() =>
+                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-sm text-white shadow-glow-violet hover:shadow-glow-violet-lg hover:opacity-90 transition-all duration-200 focus-visible:outline-accent"
+              style={{
+                background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 55%, #1e40af 100%)",
+              }}
+            >
+              View My Work
+              <ArrowRight
+                size={16}
+                className="group-hover:translate-x-1 transition-transform"
+                aria-hidden="true"
+              />
+            </button>
+
+            <a
+              href="https://github.com/NappyyCoder"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open GitHub profile in a new tab"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-sm text-text-secondary border border-[var(--border-dim)] hover:text-text-primary hover:border-[var(--border-glow)] transition-all duration-200 focus-visible:outline-accent"
+            >
+              <Github size={16} aria-hidden="true" />
+              GitHub
+            </a>
+          </motion.div>
+        </HeroParticleField>
 
         {/* ── Stats ── */}
         <motion.div
