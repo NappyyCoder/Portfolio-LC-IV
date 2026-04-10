@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Leonard Clay IV — Full-Stack Developer & Creative Director",
   description:
-    "Purdue University senior graduating May/July 2026. Full-Stack Developer specializing in React, Next.js, TypeScript, and AI integrations. Creative Director at Nard Shop.",
+    "Purdue University senior graduating May 2026. Full-Stack Developer specializing in React, Next.js, TypeScript, and AI integrations. Creative Director at Nard Shop.",
   keywords: [
     "Leonard Clay IV",
     "Full-Stack Developer",
