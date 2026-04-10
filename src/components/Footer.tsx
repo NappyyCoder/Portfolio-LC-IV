@@ -2,7 +2,8 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Github, Mail, ArrowUpRight } from "lucide-react";
+import { Github, Mail, ArrowUpRight, Globe } from "lucide-react";
+import { SITE_URL } from "@/lib/site";
 import { staggerContainer, fadeInUp } from "@/lib/animations";
 
 const navLinks = [
@@ -60,6 +61,17 @@ export default function Footer() {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
+            <a
+              href={SITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open live portfolio site in a new tab"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-sm text-text-secondary border border-border-dim hover:text-text-primary hover:border-border-glow hover:shadow-glow-violet transition-all duration-200 focus-visible:outline-violet-accent"
+            >
+              <Globe size={16} aria-hidden="true" />
+              Live portfolio
+              <ArrowUpRight size={13} aria-hidden="true" />
+            </a>
             <a
               href="mailto:leonardclay04@gmail.com"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-sm text-white transition-all duration-200 shadow-glow-violet hover:shadow-glow-violet-lg focus-visible:outline-violet-accent"
