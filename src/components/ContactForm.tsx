@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Send, Loader2, CheckCircle2, Github, ArrowUpRight } from "lucide-react";
 import { CONTACT_EMAIL } from "@/lib/site";
+import { submitViaWeb3Forms } from "@/lib/web3forms";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -30,18 +31,32 @@ export default function ContactForm() {
     setErrorMsg("");
     setStatus("loading");
 
+    if (company) {
+      setStatus("success");
+      return;
+    }
+
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY?.trim();
+    if (!accessKey) {
+      setStatus("error");
+      setErrorMsg(
+        "Contact form is not configured. Add NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY in .env.local (see Web3Forms)."
+      );
+      return;
+    }
+
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject, message, company }),
+      const result = await submitViaWeb3Forms({
+        accessKey,
+        name: name.trim(),
+        email: email.trim(),
+        subject: `[Portfolio] ${subject.trim()}`,
+        message: message.trim(),
       });
 
-      const data = (await res.json()) as { error?: string; success?: boolean };
-
-      if (!res.ok) {
+      if (!result.ok) {
         setStatus("error");
-        setErrorMsg(data.error || "Something went wrong. Please try again.");
+        setErrorMsg(result.error);
         return;
       }
 
