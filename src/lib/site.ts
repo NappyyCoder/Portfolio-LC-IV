@@ -5,3 +5,5 @@
  */
 export const SITE_URL =
   "https://project-llssm-7jujzv6f6-leonard-clay-s-projects.vercel.app";
+
+export const CONTACT_EMAIL = "clayleo1136@gmail.com";

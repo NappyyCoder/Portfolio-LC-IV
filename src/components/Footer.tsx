@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Github, Mail, ArrowUpRight } from "lucide-react";
 import { staggerContainer, fadeInUp } from "@/lib/animations";
+import ContactForm from "@/components/ContactForm";
 
 const navLinks = [
   { label: "Stack", href: "#stack" },
@@ -30,7 +30,7 @@ export default function Footer() {
       {/* Background glow */}
       <div
         aria-hidden="true"
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] rounded-full"
+        className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] rounded-full"
         style={{
           background:
             "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(37,99,235,0.10) 0%, transparent 70%)",
@@ -59,30 +59,7 @@ export default function Footer() {
             building something ambitious, let&apos;s talk.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="mailto:leonardclay04@gmail.com"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-sm text-white transition-all duration-200 shadow-glow-violet hover:shadow-glow-violet-lg focus-visible:outline-violet-accent"
-              style={{
-                background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 55%, #1e40af 100%)",
-              }}
-              aria-label="Send email to Leonard Clay IV"
-            >
-              <Mail size={16} aria-hidden="true" />
-              Say Hello
-            </a>
-            <a
-              href="https://github.com/NappyyCoder"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open GitHub profile in a new tab"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-semibold text-sm text-text-secondary border border-border-dim hover:text-text-primary hover:border-border-glow hover:shadow-glow-violet transition-all duration-200 focus-visible:outline-violet-accent"
-            >
-              <Github size={16} aria-hidden="true" />
-              GitHub
-              <ArrowUpRight size={13} aria-hidden="true" />
-            </a>
-          </div>
+          <ContactForm />
         </motion.div>
 
         <motion.hr
