@@ -1,5 +1,5 @@
 import Navigation from "@/components/Navigation";
-import Hero from "@/components/Hero";
+import HeroExpansion from "@/components/HeroExpansion";
 import TechStack from "@/components/TechStack";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
@@ -10,7 +10,7 @@ export default function Home() {
     <>
       <Navigation />
       <main id="main-content">
-        <Hero />
+        <HeroExpansion />
 
         <hr
           aria-hidden="true"
