@@ -1,9 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Github } from "lucide-react";
+import { ArrowRight, Github, ArrowUpRight } from "lucide-react";
 import { staggerContainer, fadeInUp } from "@/lib/animations";
 import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
+
+const featuredProjects = [
+  {
+    name: "Study Buddy",
+    blurb: "Real-time collaborative study platform with shared whiteboards and AI note summaries.",
+    tag: "SaaS",
+    url: "https://studdy-buddy-vercel.vercel.app",
+  },
+  {
+    name: "TCA Health",
+    blurb: "Accessible (WCAG 2.1) healthcare platform focused on equitable care resources.",
+    tag: "Client",
+    url: "https://tcahealth.org",
+  },
+  {
+    name: "Kaptivate Apparel",
+    blurb: "High-performance streetwear storefront with seamless checkout and product filtering.",
+    tag: "E-commerce",
+    url: "https://kaptivateapparel.com",
+  },
+];
 
 export default function HeroExpansion() {
   return (
@@ -42,7 +63,7 @@ export default function HeroExpansion() {
 
         <motion.p
           variants={fadeInUp}
-          className="text-sm text-text-muted max-w-sm mx-auto mb-10 leading-relaxed"
+          className="text-base text-text-secondary max-w-md mx-auto mb-10 leading-relaxed"
         >
           Building at the intersection of code, creativity, and culture.
         </motion.p>
@@ -80,22 +101,57 @@ export default function HeroExpansion() {
           </a>
         </motion.div>
 
-        <motion.div
-          variants={fadeInUp}
-          className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 pt-8 border-t border-[var(--border-dim)]"
-        >
-          {[
-            { value: "6+", label: "Years Building" },
-            { value: "5+", label: "Projects Shipped" },
-            { value: "5+", label: "Clients Served" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <p className="text-3xl font-black gradient-text">{stat.value}</p>
-              <p className="text-[11px] text-text-muted uppercase tracking-widest mt-1 font-medium">
-                {stat.label}
-              </p>
-            </div>
-          ))}
+        <motion.div variants={fadeInUp} className="pt-10 border-t border-[var(--border-dim)]">
+          <p className="section-label mb-6">Featured Work</p>
+          <ul
+            role="list"
+            aria-label="Featured portfolio projects"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-left"
+          >
+            {featuredProjects.map((project) => (
+              <li key={project.name}>
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open ${project.name} live site in a new tab`}
+                  className="group flex h-full flex-col rounded-xl border border-[var(--border-dim)] p-5 card-glow transition-all duration-200 hover:border-[var(--border-glow)] focus-visible:outline-accent"
+                  style={{ background: "var(--card-bg-gradient)" }}
+                >
+                  <div className="mb-2 flex items-start justify-between gap-3">
+                    <h3 className="text-base font-bold text-text-primary transition-colors group-hover:text-accent-light">
+                      {project.name}
+                    </h3>
+                    <ArrowUpRight
+                      size={16}
+                      aria-hidden="true"
+                      className="flex-shrink-0 text-text-muted transition-colors group-hover:text-accent-light"
+                    />
+                  </div>
+                  <p className="mb-4 flex-1 text-sm leading-relaxed text-text-secondary">
+                    {project.blurb}
+                  </p>
+                  <span className="self-start tag-pill">{project.tag}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-8 text-center">
+            <button
+              onClick={() =>
+                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="group inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-accent-light focus-visible:outline-accent"
+            >
+              See all projects
+              <ArrowRight
+                size={15}
+                aria-hidden="true"
+                className="transition-transform group-hover:translate-x-1"
+              />
+            </button>
+          </div>
         </motion.div>
       </motion.div>
     </ScrollExpandMedia>
